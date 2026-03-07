@@ -4,31 +4,32 @@
 #include "pcb.h"
 #include "input_parser.h"
 #include "queue.h"
+using namespace std;
 
 struct GanttEntry {
-    std::string pid;
+    string pid;
     int start_time;
     int end_time;
 };
 
 int main() {
-    std::vector<PCB> processes = InputParser::parseInput("input.txt");
+    vector<PCB> processes = InputParser::parseInput("input.txt");
 
     if (processes.empty()) {
-        std::cerr << "No processes found in input.txt" << std::endl;
+        cerr << "No processes found in input.txt" << endl;
         return 1;
     }
 
-    std::cout << "=====================================" << std::endl;
-    std::cout << "   FCFS CPU Scheduling Simulator" << std::endl;
-    std::cout << "=====================================" << std::endl << std::endl;
+    cout << "=====================================" << endl;
+    cout << "   FCFS CPU Scheduling Simulator" << endl;
+    cout << "=====================================" << endl << endl;
 
     Queue ready_queue;
     PCB running_process;
     bool has_running = false;
     int current_time = 0;
     int terminated_count = 0;
-    std::vector<GanttEntry> gantt_chart;
+    vector<GanttEntry> gantt_chart;
     int last_gantt_time = 0;
 
     while (terminated_count < (int)processes.size()) {
@@ -85,14 +86,14 @@ int main() {
         }
 
         // Print PCB trace
-        std::cout << "Time " << current_time << ":" << std::endl;
-        std::cout << "RUNNING :" << std::endl;
+        cout << "Time " << current_time << ":" << endl;
+        cout << "RUNNING :" << endl;
         if (has_running) {
             running_process.print();
         } else {
-            std::cout << "IDLE" << std::endl;
+            cout << "IDLE" << endl;
         }
-        std::cout << "READY :" << std::endl;
+        cout << "READY :" << endl;
         if (!ready_queue.isEmpty()) {
             int count;
             PCB* ready_procs = ready_queue.getAllInOrder(count);
@@ -101,25 +102,25 @@ int main() {
             }
             delete[] ready_procs;
         }
-        std::cout << std::endl;
+        cout << endl;
 
         current_time++;
     }
 
     // Print Gantt Chart
-    std::cout << "Gantt Chart:" << std::endl;
+    cout << "Gantt Chart:" << endl;
     for (const auto& entry : gantt_chart) {
-        std::cout << "| " << entry.pid << " ";
+        cout << "| " << entry.pid << " ";
     }
-    std::cout << "|" << std::endl;
-    std::cout << "0";
+    cout << "|" << endl;
+    cout << "0";
     for (const auto& entry : gantt_chart) {
-        std::cout << std::setw(4) << entry.end_time;
+        cout << setw(4) << entry.end_time;
     }
-    std::cout << std::endl;
+    cout << endl;
 
     // Print statistics
-    std::cout << "\n=== Scheduling Statistics ===" << std::endl;
+    cout << "\n=== Scheduling Statistics ===" << endl;
     double total_waiting = 0, total_turnaround = 0, total_response = 0;
 
     for (const auto& p : processes) {
@@ -128,10 +129,10 @@ int main() {
             int turnaround = p.completion_time - p.arrival_time;
             int waiting = turnaround - p.total_burst;
 
-            std::cout << "PID " << p.pid << ": "
+            cout << "PID " << p.pid << ": "
                       << "Response=" << response << ", "
                       << "Waiting=" << waiting << ", "
-                      << "Turnaround=" << turnaround << std::endl;
+                      << "Turnaround=" << turnaround << endl;
 
             total_response += response;
             total_waiting += waiting;
@@ -145,12 +146,12 @@ int main() {
     }
 
     if (completed > 0) {
-        std::cout << "\nAverage Response Time: " 
-                  << (double)total_response / completed << std::endl;
-        std::cout << "Average Waiting Time: " 
-                  << (double)total_waiting / completed << std::endl;
-        std::cout << "Average Turnaround Time: " 
-                  << (double)total_turnaround / completed << std::endl;
+        cout << "\nAverage Response Time: " 
+                  << (double)total_response / completed << endl;
+        cout << "Average Waiting Time: " 
+                  << (double)total_waiting / completed << endl;
+        cout << "Average Turnaround Time: " 
+                  << (double)total_turnaround / completed << endl;
     }
 
     return 0;

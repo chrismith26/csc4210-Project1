@@ -5,27 +5,28 @@
 #include <sstream>
 #include <vector>
 #include "pcb.h"
+using namespace std;
 
 class InputParser {
 public:
-    static std::vector<PCB> parseInput(const std::string& filename) {
-        std::vector<PCB> processes;
-        std::ifstream file(filename);
+    static vector<PCB> parseInput(const string& filename) {
+        vector<PCB> processes;
+        ifstream file(filename);
 
         if (!file.is_open()) {
-            std::cerr << "Error opening file: " << filename << std::endl;
+            cerr << "Error opening file: " << filename << endl;
             return processes;
         }
 
-        std::string line;
+        string line;
         // Skip header line
-        std::getline(file, line);
+        getline(file, line);
 
-        while (std::getline(file, line)) {
+        while (getline(file, line)) {
             if (line.empty()) continue;
 
-            std::istringstream iss(line);
-            std::string pid;
+            istringstream iss(line);
+            string pid;
             int arrival, burst, priority;
 
             if (iss >> pid >> arrival >> burst >> priority) {

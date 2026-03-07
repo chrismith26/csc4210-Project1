@@ -2,6 +2,7 @@
 #define QUEUE_H
 
 #include "pcb.h"
+using namespace std;
 
 struct Node {
     PCB data;

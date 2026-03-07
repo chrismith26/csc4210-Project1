@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+using namespace std;
 
 enum State {
     NEW,
@@ -12,7 +13,7 @@ enum State {
 };
 
 struct PCB {
-    std::string pid;
+    string pid;
     int arrival_time;
     int total_burst;
     int remaining_time;
@@ -26,12 +27,12 @@ struct PCB {
             priority(0), state(NEW), start_time(-1), completion_time(-1), 
             time_in_running(0) {}
 
-    PCB(std::string p, int arr, int burst, int prio)
+    PCB(string p, int arr, int burst, int prio)
         : pid(p), arrival_time(arr), total_burst(burst), 
           remaining_time(burst), priority(prio), state(NEW),
           start_time(-1), completion_time(-1), time_in_running(0) {}
 
-    std::string getStateString() const {
+    string getStateString() const {
         switch (state) {
             case NEW:       return "NEW";
             case READY:     return "READY";
@@ -42,12 +43,12 @@ struct PCB {
     }
 
     void print() const {
-        std::cout << "PID = " << pid 
-                  << " Arr =" << arrival_time 
-                  << " Burst =" << total_burst 
-                  << " Rem =" << remaining_time 
-                  << " Prio =" << priority 
-                  << " State = " << getStateString() << std::endl;
+        cout << "PID = " << pid 
+             << " Arr =" << arrival_time 
+             << " Burst =" << total_burst 
+             << " Rem =" << remaining_time 
+             << " Prio =" << priority 
+             << " State = " << getStateString() << endl;
     }
 };
 
